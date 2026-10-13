@@ -3,6 +3,8 @@ import { parseProjectsCsv } from './csv.js';
 
 (() => {
   'use strict';
+  const PAGE_SIZE = 12;
+  let visibleLimit = PAGE_SIZE;
   let projects = [];
   let searchable = new Map();
   let loadState = 'loading';
@@ -11,6 +13,7 @@ import { parseProjectsCsv } from './csv.js';
   let loadError = '';
   const $ = (selector) => document.querySelector(selector);
   const grid = $('#project-grid');
+  const loadMore = $('#load-more');
   const search = $('#search');
   const sort = $('#sort');
   const dialog = $('#project-dialog');
@@ -60,6 +63,7 @@ import { parseProjectsCsv } from './csv.js';
         ${p.note ? `<p class="card-note"><span>↳</span> ${escape(p.note)}</p>` : ''}
         ${sourceCode(p)}
         <div class="project-team"><span class="team-label">KÉSZÍTŐK ÉS FENNTARTÓK</span><div class="team-line"><span class="team-mark" aria-hidden="true">${escape(p.mark)}</span><span class="team-name">${escape(p.team)}</span><a class="contact-link" href="${escape(p.contact)}" ${linkAttrs(p.contact)} aria-label="${escape(p.name)} — kapcsolat" title="${escape(p.contact.replace('mailto:', ''))}">${icon('mail')}</a></div></div>
+        <p class="project-verified"><span>Ellenőrizve:</span> ${p.verifiedAt ? `<time datetime="${escape(p.verifiedAt)}">${escape(dateLabel(p.verifiedAt))}</time>` : '<span>nincs megadva</span>'}</p>
       </div>
       <div class="card-actions"><a href="${escape(p.url)}" ${external}>Weboldal ${icon('external')}</a><button class="details-button" data-details="${escape(p.id)}" aria-label="${escape(p.name)} — részletek">Részletek ${icon('arrow')}</button></div>
     </article>`;
@@ -73,11 +77,20 @@ import { parseProjectsCsv } from './csv.js';
     history.replaceState(null, '', url);
   }
 
-  function render(syncUrl = true) {
+  function render(syncUrl = true, append = false) {
+    if (!append) visibleLimit = PAGE_SIZE;
     const words = normalize(search.value).split(/\s+/).filter(Boolean);
-    const visible = projects.filter((p) => (category === 'all' || p.categories.includes(category)) && words.every((word) => searchable.get(p.id).includes(word)));
-    if (sort.value !== 'curated') visible.sort((a, b) => a.name.localeCompare(b.name, 'hu') * (sort.value === 'za' ? -1 : 1));
-    grid.innerHTML = visible.map(card).join('');
+    const matches = projects.filter((p) => (category === 'all' || p.categories.includes(category)) && words.every((word) => searchable.get(p.id).includes(word)));
+    if (sort.value !== 'curated') matches.sort((a, b) => a.name.localeCompare(b.name, 'hu') * (sort.value === 'za' ? -1 : 1));
+    const visible = matches.slice(0, visibleLimit);
+    if (append) {
+      const start = grid.children.length;
+      grid.insertAdjacentHTML('beforeend', visible.slice(start).map((p, index) => card(p, start + index)).join(''));
+    } else {
+      grid.innerHTML = visible.map(card).join('');
+    }
+    $('#load-more-control').hidden = visible.length >= matches.length;
+    $('#load-more-count').textContent = `${visible.length} / ${matches.length} kezdeményezés megjelenítve`;
     grid.hidden = visible.length === 0;
     $('#empty-state').hidden = visible.length !== 0 || loadState === 'loading';
     grid.setAttribute('aria-busy', String(loadState === 'loading'));
@@ -90,7 +103,7 @@ import { parseProjectsCsv } from './csv.js';
     $('#clear-search').hidden = !search.value;
     $('#total-count').textContent = loadState === 'loading' ? '–' : projects.length;
     $('[data-filter="all"] span').textContent = loadState === 'loading' ? '–' : projects.length;
-    $('#results-count').textContent = loadState === 'loading' ? 'Betöltés folyamatban…' : words.length || category !== 'all' ? `${visible.length} találat · ${projects.length} kezdeményezésből` : `${projects.length} kezdeményezés a gyűjteményben`;
+    $('#results-count').textContent = loadState === 'loading' ? 'Betöltés folyamatban…' : words.length || category !== 'all' ? `${matches.length} találat · ${visible.length} megjelenítve · ${projects.length} kezdeményezésből` : `${visible.length} / ${projects.length} kezdeményezés megjelenítve`;
     search.disabled = sort.disabled = !projects.length;
     filterButtons.forEach((button) => {
       button.disabled = !projects.length;
@@ -167,6 +180,12 @@ import { parseProjectsCsv } from './csv.js';
   filterButtons.forEach((button) => button.addEventListener('click', () => { category = button.dataset.filter; render(); }));
   search.addEventListener('input', () => render());
   sort.addEventListener('change', () => render());
+  loadMore.addEventListener('click', () => {
+    const previousCount = grid.children.length;
+    visibleLimit += PAGE_SIZE;
+    render(false, true);
+    grid.children[previousCount]?.querySelector('.project-title a')?.focus({ preventScroll: true });
+  });
   $('#clear-search').addEventListener('click', () => { search.value = ''; render(); search.focus(); });
   $('#reset-filters').addEventListener('click', () => { search.value = ''; category = 'all'; sort.value = 'curated'; render(); search.focus(); });
   $('#reload-data').addEventListener('click', () => loadCatalog('live'));

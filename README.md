@@ -53,6 +53,24 @@ Az oldal minden megnyitáskor közvetlenül a `dist/config.js` `csvUrl` mezőjé
 
 A további kezdeményezéseket új sorokként add a Google Sheetshez. Az adatok frissítéséhez nem kell újra telepíteni a weboldalt. A képfájlok hozzáadásához viszont a weboldal fájljait is frissíteni kell, ha helyi képutat használsz.
 
+### Öt új kezdeményezés importálása
+
+A [civic-tech-uj-kezdemenyezesek.csv](./dist/downloads/civic-tech-uj-kezdemenyezesek.csv) a minta pontos oszlopsorrendjében tartalmaz öt további, 2026. október 12-én ellenőrzött rekordot: Kormányfigyelő, Hol a komment?, Magyar politikai Facebook-archívum, NKA-támogatások és értitek. UTF-8 kódolású, vesszővel elválasztott fájl; az idézőjelezés megőrzi a szövegen belüli vesszőket.
+
+Importáld a fájlt egy külön munkalapra, majd az **A2:R6** tartományt másold a már publikált adatlap utolsó adatsora alá. A fejlécet ne másold be még egyszer. Üres adatlap esetén az **A1:R6** tartományt másold át a fejléccel együtt. A fájl nem tartalmazza a korábbi hat mintarekordot, és nem módosítja automatikusan a Google-táblázatot.
+
+A képek a `dist/assets/screenshots/` mappában találhatók: `kormanyfigyelo.jpg`, `holakomment.jpg`, `fb-politika-archivum.jpg`, `nka-tamogatasok.jpg`, `ertitek.jpg`. Ezeket a fájlokat is töltsd fel a repositoryba a GitHub Pages frissítéséhez. A CSV képutai ezekre a helyi fájlokra mutatnak.
+
+A Facebook-archívum nyílt forráskódját és GPL-3.0 licencét ellenőriztük; a másik négy rekord státusza **nem ismert**. Az üzemeltetői, adatkezelői és projektgazdai szerepeket a nevek mellett külön feltüntettük. Az adatokat igazoló hivatkozások a **Forrás** oszlopban szerepelnek. Az oldal saját CSV-feldolgozója mind az öt új sort, illetve a hat mintasorral egyesített tizenegy rekordot figyelmeztetés nélkül fogadja el.
+
+### Új adatgyűjtés: 2026. október 13.
+
+A [kitöltött Excel](./dist/downloads/civic-tech-kezdemenyezesek-2026-10-13.xlsx) és a [CSV-változat](./dist/downloads/civic-tech-kezdemenyezesek-2026-10-13.csv) az **Út a börtönbe**, a **Tisztítótűz** és a **HírSpektrum** adatait tartalmazza. A 18 oszlop sorrendje megegyezik a mintával. Az Excel **Kezdeményezések** lapjáról az **A2:R4** tartományt másold a publikált adatlap végére; a fejlécet ne ismételd meg. Üres adatlapra az A1:R4 tartományt másold.
+
+A hozzájuk tartozó képek: `ut-a-bortonbe.jpg`, `tisztitotuz.jpg`, `hirspektrum.jpg` a `dist/assets/screenshots/` alatt. A Tisztítótűz képe az App Store-adatlapot mutatja. Az új adatok importálása nem történik meg a GitHubra feltöltéstől.
+
+Mindhárom projekt nyílt forráskódú státusza **nem ismert**. Az Út a börtönbe készítőjének személyneve nem igazolt; a nyilvános projekt-email szerepel. A K-Monitor-adatbázis használatát a beküldő közléseként jelöltük. A Tisztítótűzhöz közvetlen e-mailt nem találtunk: a kapcsolat a fejlesztő igazolt App Store-profiljára vezet, és ezt a megjegyzés jelzi. A feltételek a beküldött tippek szerkesztői ellenőrzését igazolják, a teljes hírfolyam kézi kurálását nem.
+
 ### Oszlopok
 
 Az első sor az oszlopneveket tartalmazza, egy további sor egy kezdeményezés. Az oszlopok sorrendje tetszőleges; az alábbi magyar fejlécek használhatók. Az öt kötelező mező az aktív sorokban nem lehet üres.
@@ -82,6 +100,8 @@ A kártyák külön jelzik a nyílt, nem nyílt és ismeretlen forráskód-álla
 A feldolgozó kezeli az idézőjeleket, a cellán belüli vesszőket és sortöréseket, a Windows-sortörést és az UTF-8 BOM-ot. A hibás sorokat sorszámmal jelzi; a többi érvényes sor megjelenik. Hibás fejléc, hibás CSV-szerkezet vagy kizárólag hibás aktív sorok esetén hibaüzenet jelenik meg. A maximális CSV-méret 2 MB, a letöltési időkorlát alapértelmezésben 15 másodperc. Betöltési hiba esetén nincs automatikus mintaadat-helyettesítés.
 
 Az ékezetfüggetlen keresés a névben, leírásban, címkékben és készítőkben keres. A keresés, szűrő és rendezés URL-paraméterekben is megmarad, így egy szűrt nézet linkje megosztható. A `/` billentyű a keresőre ugrik, az `Esc` bezárja a részletes adatlapot.
+
+Elsőre legfeljebb 12 kártya jelenik meg. A lista alján a **Még több betöltése** gomb további legfeljebb 12 kártyát mutat, és eltűnik, amikor minden találat látható. Keresés, témaszűrés, rendezés vagy adatfrissítés után ismét az első 12 találat jelenik meg; a keresés és rendezés mindig a teljes betöltött adatállományra vonatkozik.
 
 ## GitHub Pages publikálás
 

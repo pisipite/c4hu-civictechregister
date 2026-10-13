@@ -30,7 +30,31 @@ A képek 2026. október 11-én böngészőben készültek a projektek nyilvános
 
 A Közérthető Költségvetés képe és hivatkozása a Mintaváros demóoldalát mutatja; ezt a kártya is jelöli. A régi `parlament.k-monitor.hu` cím helyett az aktuális Parlamonitor szerepel.
 
+### Az öt új rekord képei
+
+A következő valódi képernyőképek 2026. október 12-én készültek a nyilvános oldalakról, a tartalmat kitakaró tájékoztató- és hírlevélablakok bezárása után. A Facebook-archívum képe a betöltött Adatbázis nézetet mutatja. A fájlokat a `dist/downloads/civic-tech-uj-kezdemenyezesek.csv` hivatkozza.
+
+| Helyi fájl a `dist/assets/screenshots/` alatt | Megnyitott forrás |
+| --- | --- |
+| `kormanyfigyelo.jpg` | https://kormanytagok.hu/ |
+| `holakomment.jpg` | https://holakomment.hu/ |
+| `fb-politika-archivum.jpg` | https://ferenci-tamas.github.io/fb-politika-archivum/ |
+| `nka-tamogatasok.jpg` | https://kormany.hu/atlathato/nkatamogatasok |
+| `ertitek.jpg` | https://ertitek.hu/ |
+
+Az NKA-adatlap hivatalos kormányzati adatközlés; ezt a rekord megjegyzése is jelöli. A Facebook-archívum repositoryjának licence [GPL-3.0](https://github.com/ferenci-tamas/fb-politika-archivum/blob/main/LICENSE); ez nem jelenti az archivált Facebook-tartalmak újralicencelését. A másik négy új rekord esetében nyilvános forráskód és nyílt licenc nem volt igazolható, ezért státuszuk „nem ismert”. A készítőkre és elérhetőségekre vonatkozó elsődleges források az új CSV **Forrás** oszlopában találhatók.
+
 A projektek céljának, készítőinek és kapcsolatainak elsődleges forrásai a mintaexcel és a minta CSV **Forrás** oszlopában, illetve a weboldal részletes projektadatlapjain szerepelnek. Ahol személy szerinti fejlesztőnév nem volt igazolható, az igazolt szervezet vagy fejlesztői közösség neve szerepel. Az élő katalógus a `dist/config.js` fájlban beállított Google Sheets CSV-ből tölti az adatokat.
+
+### 2026. október 13-i képernyőképek
+
+| Helyi fájl a `dist/assets/screenshots/` alatt | Megnyitott forrás |
+| --- | --- |
+| `ut-a-bortonbe.jpg` | https://utaborton.be/ |
+| `tisztitotuz.jpg` | https://apps.apple.com/us/app/tiszt%C3%ADt%C3%B3t%C5%B1z/id6786331840 |
+| `hirspektrum.jpg` | https://hirspektrum.hu/ |
+
+A képek valódi böngészős felvételek. Az Út a börtönbe analitikai sütijeit elutasítottuk. A Tisztítótűz felvétele az App Store nyilvános termékoldaláról készült, az alkalmazáson belüli használatot nem teszteltük. A kapcsolódó rekordok a `civic-tech-kezdemenyezesek-2026-10-13.xlsx` és `.csv` fájlokban találhatók; a szöveges adatok forrásai a **Forrás** oszlopban szerepelnek.
 
 ## Repositoryk és licencek a mintaadatokban
 

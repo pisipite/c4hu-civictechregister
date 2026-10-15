@@ -101,6 +101,8 @@ A feldolgozó kezeli az idézőjeleket, a cellán belüli vesszőket és sortör
 
 Az ékezetfüggetlen keresés a névben, leírásban, címkékben és készítőkben keres. A keresés, szűrő és rendezés URL-paraméterekben is megmarad, így egy szűrt nézet linkje megosztható. A `/` billentyű a keresőre ugrik, az `Esc` bezárja a részletes adatlapot.
 
+A **Sorrend** menüben az alapértelmezett válogatás és a névsor mellett az **Ellenőrizve** dátum szerint is rendezhető a lista, a legújabb vagy a legrégebbi dátummal kezdve. A dátum nélküli kezdeményezések mindkét esetben a lista végére kerülnek.
+
 Elsőre legfeljebb 12 kártya jelenik meg. A lista alján a **Még több betöltése** gomb további legfeljebb 12 kártyát mutat, és eltűnik, amikor minden találat látható. Keresés, témaszűrés, rendezés vagy adatfrissítés után ismét az első 12 találat jelenik meg; a keresés és rendezés mindig a teljes betöltött adatállományra vonatkozik.
 
 ## GitHub Pages publikálás

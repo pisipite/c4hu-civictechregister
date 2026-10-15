@@ -9,6 +9,11 @@ A gyűjtemény a felhasználó kérésére a Code for Hungary közösség arcula
 - A közösség bemutatása és nyilvános címe (`hello@code4.hu`): https://code4.hu/ és https://github.com/Code-for-Hungary.
 - A favicon saját, az arculat szögletes zárójel-motívumára épülő SVG. A fejlécben és láblécben az eredeti logó látható.
 
+## Láblécikonok
+
+- Creative Commons, Nevezd meg! és Így add tovább! ikonok: a [Creative Commons hivatalos sajtócsomagjából](https://creativecommons.org/mission/downloads/), változatlan SVG-k. Források: `https://mirrors.creativecommons.org/presskit/icons/cc.svg`, `by.svg`, `sa.svg`. Helyük: `dist/assets/icons/cc-cc.svg`, `cc-by.svg`, `cc-sa.svg`.
+- GitHub-jel: a [GitHub Octicons](https://github.com/primer/octicons) `mark-github-16.svg` ikonja, helyi fájl: `dist/assets/icons/github.svg`. Az Octicons MIT-licencű; a licenc másolata: `dist/assets/icons/OCTICONS-LICENSE.txt`.
+
 ## Betűkészlet
 
 A Raleway 400–800 változó betűkészlet latin és latin-ext WOFF2 fájljai a Google Fonts hivatalos https://fonts.googleapis.com/css2?family=Raleway:wght@400..800&display=swap stíluslapján hivatkozott forrásokból származnak. Helyük: `dist/assets/fonts/`.

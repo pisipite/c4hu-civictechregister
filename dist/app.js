@@ -39,7 +39,6 @@ import { parseProjectsCsv } from './csv.js';
     a.href = `mailto:${config.submissionEmail}`;
     if (a.textContent.includes('@')) a.textContent = config.submissionEmail;
   });
-  $('#year').textContent = new Date().getFullYear();
   $('#data-source-link').href = config.csvUrl;
 
   function sourceCode(p, detailed = false) {
@@ -81,7 +80,17 @@ import { parseProjectsCsv } from './csv.js';
     if (!append) visibleLimit = PAGE_SIZE;
     const words = normalize(search.value).split(/\s+/).filter(Boolean);
     const matches = projects.filter((p) => (category === 'all' || p.categories.includes(category)) && words.every((word) => searchable.get(p.id).includes(word)));
-    if (sort.value !== 'curated') matches.sort((a, b) => a.name.localeCompare(b.name, 'hu') * (sort.value === 'za' ? -1 : 1));
+    if (sort.value === 'date-asc' || sort.value === 'date-desc') {
+      const direction = sort.value === 'date-asc' ? 1 : -1;
+      matches.sort((a, b) => {
+        // Missing dates stay last in both directions; validated ISO dates sort lexically.
+        if (!a.verifiedAt) return b.verifiedAt ? 1 : 0;
+        if (!b.verifiedAt) return -1;
+        return a.verifiedAt.localeCompare(b.verifiedAt) * direction;
+      });
+    } else if (sort.value !== 'curated') {
+      matches.sort((a, b) => a.name.localeCompare(b.name, 'hu') * (sort.value === 'za' ? -1 : 1));
+    }
     const visible = matches.slice(0, visibleLimit);
     if (append) {
       const start = grid.children.length;
@@ -173,7 +182,7 @@ import { parseProjectsCsv } from './csv.js';
     const params = new URLSearchParams(window.location.search);
     search.value = params.get('q') || '';
     category = filterButtons.some((b) => b.dataset.filter === params.get('tema')) ? params.get('tema') : 'all';
-    sort.value = ['az', 'za'].includes(params.get('sorrend')) ? params.get('sorrend') : 'curated';
+    sort.value = ['az', 'za', 'date-asc', 'date-desc'].includes(params.get('sorrend')) ? params.get('sorrend') : 'curated';
     render(false);
   }
 

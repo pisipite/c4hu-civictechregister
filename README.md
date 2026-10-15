@@ -42,6 +42,8 @@ A beküldés egy előre kitöltött e-mailt nyit meg a látogató levelezőprogr
 
 ## Google Sheets adatforrás és mintaexcel
 
+Az **Ismersz egy jó kezdeményezést?** doboz alatt az alapból zárt **Adatbázis részletei** gomb nyitja meg az adatforrás állapotát és hivatkozását, a **Frissítés** gombot, az esetleges adatfigyelmeztetéseket, valamint az Excel- és CSV-minta letöltését.
+
 Az oldal minden megnyitáskor közvetlenül a `dist/config.js` `csvUrl` mezőjében megadott, nyilvánosan publikált CSV-t tölti be. A **Frissítés** gomb újra lekéri az adatokat. Az alapértelmezett cím a felhasználó által megadott [Google Sheets CSV-export](https://docs.google.com/spreadsheets/d/e/2PACX-1vTu0zyHCCrXFWwK2CEhAbR7YgfmDZZ4wL099wPk34obxC2dvAf2VxBbDSl3yXHeGg7sg2NM4ComjHBA/pub?output=csv).
 
 **A publikált CSV 2026. október 12-én elérhető volt, de üres választ adott.** Az oldal ezt külön jelzi. A **Mintaadatok megtekintése** gomb a helyi CSV hat kitöltött kezdeményezését mutatja meg, jól látható mintaadat-jelzéssel. Ez a gomb nem ír a Google Sheetsbe, és a következő oldalbetöltés ismét az élő adatforrást használja.

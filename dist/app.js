@@ -105,7 +105,7 @@ import { parseProjectsCsv } from './csv.js';
     grid.setAttribute('aria-busy', String(loadState === 'loading'));
     const noDatabase = loadState === 'empty' || loadState === 'error';
     $('#empty-title').textContent = loadState === 'error' ? 'Az adatforrás most nem tölthető be.' : loadState === 'empty' ? 'A táblázatban még nincs megjeleníthető kezdeményezés.' : 'Erre még nincs találat.';
-    $('#empty-description').textContent = loadState === 'error' ? `${loadError} Próbáld újra a Frissítés gombbal, vagy nézd meg a mintaadatokat.` : loadState === 'empty' ? 'Töltsd le a mintaexcelt, majd másold a Kezdeményezések lap adatait a publikált Google Sheets-munkalapra. Ezután frissítsd a gyűjteményt.' : 'Próbálj másik kifejezést, vagy nézd meg az összes kezdeményezést.';
+    $('#empty-description').textContent = loadState === 'error' ? `${loadError} Próbáld újra az alábbi Adatbázis részletei doboz Frissítés gombjával, vagy nézd meg a mintaadatokat.` : loadState === 'empty' ? 'Töltsd le a mintaexcelt, majd másold a Kezdeményezések lap adatait a publikált Google Sheets-munkalapra. Ezután frissítsd a gyűjteményt.' : 'Próbálj másik kifejezést, vagy nézd meg az összes kezdeményezést.';
     $('#reset-filters').hidden = noDatabase;
     $('#show-sample').hidden = !noDatabase || sourceMode === 'sample';
     $('#empty-download').hidden = !noDatabase;

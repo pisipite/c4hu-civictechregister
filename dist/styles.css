@@ -16,6 +16,16 @@ dialog{width:min(630px,calc(100% - 32px));max-height:90vh;padding:0;border:1px s
 .project-visual img,.dialog-image{height:auto}
 .database-details{margin-top:18px;width:fit-content;max-width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}.database-details>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;list-style:none;cursor:pointer;padding:13px 17px;font-size:12px;font-weight:650;min-height:44px}.database-details>summary::-webkit-details-marker{display:none}.database-details>summary:hover{color:var(--teal-dark)}.database-details>summary .icon{width:16px;height:16px;flex-shrink:0;transition:transform .2s}.database-details[open]{width:auto;background:#fafcfb}.database-details[open]>summary{border-bottom:1px solid var(--line)}.database-details[open]>summary .icon{transform:rotate(180deg)}.database-details-content{padding:20px}.database-details .data-status{margin-bottom:16px}.database-details .data-warnings{margin:0 0 16px}.database-details .catalog-note{margin:0;font-size:11px}.database-details .template-links{margin-top:12px}
 .sort-wrap select{max-width:240px}
+.filter[data-filter="all"]{--filter-tint:#edf2eb}
+.filter[data-filter="atlathatosag"]{--filter-tint:#f5eeeb}
+.filter[data-filter="kozpenzek"]{--filter-tint:#ebf1f5}
+.filter[data-filter="nyilt-adatok"]{--filter-tint:#f1eef7}
+.filter[data-filter="reszvetel"]{--filter-tint:#f4efeb}
+.filter[data-filter="onkormanyzatok"]{--filter-tint:#eff1f7}
+.filter{background:var(--filter-tint);color:var(--ink)}
+.filter:hover{background:var(--filter-tint);border-color:#80b9ae}
+.filter.active{background:var(--filter-tint);border-color:var(--ink);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.filter span{background:#1c2e3210}
 .collection-meta{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px 24px;padding-top:20px}.collection-meta .collection-count{padding-top:0}.section-heading .database-updated{margin:0;font-size:11px;line-height:1.6;color:var(--muted)}.database-updated time{white-space:nowrap;font-variant-numeric:tabular-nums}
 @media(max-width:760px){.section-heading{flex-direction:column;gap:14px}.collection-meta{padding-top:0;justify-content:flex-start}}
 .footer-bottom{flex-direction:column;align-items:flex-start;gap:6px;font-size:12px;line-height:1.75;color:var(--muted);padding-bottom:28px}

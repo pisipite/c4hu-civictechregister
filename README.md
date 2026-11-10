@@ -105,6 +105,8 @@ Az ékezetfüggetlen keresés a névben, leírásban, címkékben és készítő
 
 A **Sorrend** menüben az alapértelmezett válogatás és a névsor mellett az **Ellenőrizve** dátum szerint is rendezhető a lista, a legújabb vagy a legrégebbi dátummal kezdve. A dátum nélküli kezdeményezések mindkét esetben a lista végére kerülnek.
 
+A fejléc **Legutóbbi adatellenőrzés** dátuma az összes betöltött, aktív és érvényes kezdeményezés **Ellenőrizve** mezőjének legnagyobb értéke; a keresés, szűrés és lapozás nem módosítja. Ez a táblázatban megadott ellenőrzési dátum: a publikált Google Sheets CSV nem közli a munkafüzet utolsó szerkesztési idejét. Új ellenőrzés után az érintett sor **Ellenőrizve** mezőjét is frissítsd. Mintaelőnézetnél a felirat **Mintaadatok ellenőrizve**, dátum nélkül **nincs megadva**; betöltés közben vagy hiba esetén a dátum nem jelenik meg.
+
 Elsőre legfeljebb 12 kártya jelenik meg. A lista alján a **Még több betöltése** gomb további legfeljebb 12 kártyát mutat, és eltűnik, amikor minden találat látható. Keresés, témaszűrés, rendezés vagy adatfrissítés után ismét az első 12 találat jelenik meg; a keresés és rendezés mindig a teljes betöltött adatállományra vonatkozik.
 
 ## GitHub Pages publikálás

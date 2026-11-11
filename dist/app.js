@@ -21,6 +21,20 @@ import { parseProjectsCsv } from './csv.js';
   const normalize = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('hu').trim();
   const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const icon = (name) => `<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const topics = new Map(filterButtons.filter((button) => button.dataset.filter !== 'all')
+    .map((button) => [button.dataset.filter, button.textContent.trim()]));
+  const tagIcons = new Map([
+    ...[...topics].map(([id, label]) => [normalize(label), `topic-${id}`]),
+    ['kormanyzati tisztsegviselok', 'topic-onkormanyzatok'], ['szemelyi valtozasok', 'topic-reszvetel'],
+    ['kozossegi media', 'message'], ['politikai kommunikacio', 'message'], ['digitalis archivalas', 'archive'],
+    ['kulturalis tamogatasok', 'topic-kozpenzek'], ['kozertheto jogszabalyok', 'scales'], ['igeretkovetes', 'checklist'],
+    ['tulajdonosi halok', 'network'], ['turizmus', 'pin'], ['adatigenyles', 'document'], ['adatfigyeles', 'search'],
+    ['kozigazgatas', 'topic-onkormanyzatok'], ['parlament', 'topic-onkormanyzatok'], ['kozterulet', 'pin'],
+    ['eljaraskovetes', 'scales'], ['korrupciofigyeles', 'topic-atlathatosag'], ['mobilalkalmazas', 'phone'],
+    ['mediaelemzes', 'news'], ['mediatudatossag', 'news'], ['balaton', 'waves'], ['kornyezetvedelem', 'leaf'],
+    ['napenergia', 'sun'], ['energiatudatossag', 'sun'], ['energia', 'energy'],
+    ['egeszsegugyi alapellatas', 'health'], ['orvoshiany', 'health'],
+  ]);
   const external = 'target="_blank" rel="noopener noreferrer"';
   const linkAttrs = (url) => url.startsWith('mailto:') ? '' : external;
   let category = 'all';
@@ -52,11 +66,14 @@ import { parseProjectsCsv } from './csv.js';
   }
 
   function card(p, index) {
-    return `<article class="project-card" aria-labelledby="title-${escape(p.id)}" style="--card-tint:${escape(p.tint)}">
+    return `<article class="project-card" aria-labelledby="title-${escape(p.id)}">
+      <div class="project-preview">
       <a class="project-visual" href="${escape(p.url)}" ${external} aria-label="${escape(p.name)} weboldalának megnyitása (új lapon)">
         <div class="browser-frame"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>${escape(p.domain)}</span></div><img src="${escape(p.image)}" alt="${escape(p.imageAlt)}" width="1280" height="720" loading="${index < 3 ? 'eager' : 'lazy'}" decoding="async"></div><span class="visual-open">${icon('external')}</span>
       </a>
-      <div class="project-body"><div class="project-tags">${p.tags.map((t) => `<span class="tag">${escape(t)}</span>`).join('')}</div>
+      ${topicBadges(p)}
+      </div>
+      <div class="project-body">${tagBadges(p)}
         <h3 class="project-title" id="title-${escape(p.id)}"><a href="${escape(p.url)}" ${external}>${escape(p.name)}</a></h3>
         <p class="project-description">${escape(p.description)}</p>
         ${p.note ? `<p class="card-note"><span>↳</span> ${escape(p.note)}</p>` : ''}
@@ -66,6 +83,17 @@ import { parseProjectsCsv } from './csv.js';
       </div>
       <div class="card-actions"><a href="${escape(p.url)}" ${external}>Weboldal ${icon('external')}</a><button class="details-button" data-details="${escape(p.id)}" aria-label="${escape(p.name)} — részletek">Részletek ${icon('arrow')}</button></div>
     </article>`;
+  }
+
+  function topicBadges(p, showLabels = false) {
+    const assigned = [...topics].filter(([id]) => p.categories.includes(id));
+    if (!assigned.length) return '';
+    return `<ul class="project-topics${showLabels ? ' topic-labels' : ''}" aria-label="Témakörök">${assigned.map(([id, label]) =>
+      `<li class="topic-badge" title="${escape(label)}">${icon(`topic-${id}`)}<span${showLabels ? '' : ' class="sr-only"'}>${escape(label)}</span></li>`).join('')}</ul>`;
+  }
+
+  function tagBadges(p) {
+    return `<div class="project-tags">${p.tags.map((tag) => `<span class="tag">${icon(tagIcons.get(normalize(tag)) || 'tag')}${escape(tag)}</span>`).join('')}</div>`;
   }
 
   function updateUrl() {
@@ -215,7 +243,7 @@ import { parseProjectsCsv } from './csv.js';
     const p = projects.find((project) => project.id === button.dataset.details);
     if (!p) return;
     $('#dialog-content').innerHTML = `<img class="dialog-image" src="${escape(p.image)}" alt="${escape(p.imageAlt)}" width="1280" height="720">
-      <div class="dialog-body"><div class="project-tags">${p.tags.map((t) => `<span class="tag">${escape(t)}</span>`).join('')}</div><h2 id="dialog-title">${escape(p.name)}</h2><p>${escape(p.description)}</p>
+      <div class="dialog-body">${topicBadges(p, true)}${tagBadges(p)}<h2 id="dialog-title">${escape(p.name)}</h2><p>${escape(p.description)}</p>
       ${p.detail ? `<p>${escape(p.detail)}</p>` : ''}${p.note ? `<p><strong>Megjegyzés:</strong> ${escape(p.note)}</p>` : ''}
       <h3>Forráskód</h3>${sourceCode(p, true)}
       <h3>Készítők, fejlesztők és kapcsolatok</h3><ul class="maker-list">${p.makers.map((m) => `<li><div><strong>${escape(m.name)}</strong><span>${escape(m.role)}</span></div><a href="${escape(m.contact)}" ${linkAttrs(m.contact)}>${escape(m.contactLabel)}</a></li>`).join('')}</ul>

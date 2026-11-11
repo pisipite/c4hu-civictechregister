@@ -1,5 +1,4 @@
 const MAX_BYTES = 2 * 1024 * 1024;
-const PALETTE = ['#edf2eb', '#f5eeeb', '#ebf1f5', '#f1eef7', '#f4efeb', '#eff1f7'];
 const REQUIRED = ['name', 'url', 'description', 'makers', 'contacts'];
 const LABELS = { name: 'Név', url: 'Weboldal', description: 'Cél', makers: 'Fejlesztők', contacts: 'Kapcsolatok' };
 const normalize = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[\s-]+/g, '_');
@@ -220,7 +219,7 @@ export function parseProjectsCsv(text) {
         id, name, url, domain: new URL(url).hostname, description: value('description').trim(),
         tags, categories: categoryList(value('categories'), tags), image: imageUrl(value('image')),
         imageAlt: value('image').trim() ? `${name} — a projekt weboldalának képernyőképe.` : `${name} — képernyőkép még nem érhető el.`,
-        tint: PALETTE[projects.length % PALETTE.length], team: names.join(' · '),
+        team: names.join(' · '),
         mark: names[0].split(/[\s-]+/).slice(0, 3).map((part) => [...part][0]).join('').toLocaleUpperCase('hu'),
         contact: contacts[0], makers, sources, note: value('note').trim(), openSource, githubUrl: github,
         license: value('license').trim(), verifiedAt: date(value('verified_at'), 'Ellenőrizve'),

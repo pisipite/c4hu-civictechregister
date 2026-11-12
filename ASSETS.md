@@ -61,6 +61,16 @@ A projektek céljának, készítőinek és kapcsolatainak elsődleges forrásai 
 
 A képek valódi böngészős felvételek. Az Út a börtönbe analitikai sütijeit elutasítottuk. A Tisztítótűz felvétele az App Store nyilvános termékoldaláról készült, az alkalmazáson belüli használatot nem teszteltük. A kapcsolódó rekordok a `civic-tech-kezdemenyezesek-2026-10-13.xlsx` és `.csv` fájlokban találhatók; a szöveges adatok forrásai a **Forrás** oszlopban szerepelnek.
 
+### 2026. november 13-i képernyőképek
+
+| Helyi fájl a `dist/assets/screenshots/` alatt | Megnyitott forrás |
+| --- | --- |
+| `kavekozlony.jpg` | https://kavekozlony.hu/ |
+| `kozlony-roviden.jpg` | https://kozlonyroviden.hu/ |
+| `dontes-app.jpg` | https://dontes.app/sign-in |
+
+A képek valódi böngészős felvételek. A Közlöny Röviden oldalán csak a szükséges sütiket engedélyeztük; az ellenőrzéskor a legfrissebb látható közlönyszám 2026. szeptember 28-i volt. A dontes.app képe a nyilvános belépőoldalt mutatja, mert a kereső bejelentkezést igényel; a keresési funkciót nem teszteltük.
+
 ## Repositoryk és licencek a mintaadatokban
 
 Ellenőrzés: 2026. október 12. A licenc a hivatkozott repositoryra vonatkozik.

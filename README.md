@@ -1,6 +1,6 @@
 # Code for Hungary · civic-tech katalógus
 
-Reszponzív, magyar nyelvű gyűjtőoldal a közügyek átláthatóságát segítő digitális kezdeményezésekhez. A teljes weboldal a `dist/` könyvtárban található; nincs fordítási lépés, csomagfüggőség vagy háttérszerver.
+Reszponzív, magyar nyelvű gyűjtőoldal a közügyek átláthatóságát segítő digitális kezdeményezésekhez. A teljes weboldal a `dist/` könyvtárban található; nincs fordítási lépés vagy csomagfüggőség. A közös tetszésszámlálóhoz külön szavazási API szükséges; a katalógus továbbra is statikus GitHub Pages-oldal.
 
 ## Helyi indítás
 
@@ -18,20 +18,45 @@ Másik port használata:
 npm start -- --port 4174
 ```
 
-JavaScript-szintaxis és CSV-feldolgozás ellenőrzése:
+JavaScript-szintaxis, CSV-feldolgozás és szavazás ellenőrzése:
 
 ```sh
 npm run check
 npm test
 ```
 
-`npm install` nem szükséges. A szerver kizárólag a `dist/` fájljait szolgálja ki; könyvtárlistát nem mutat.
+`npm install` nem szükséges. A szerver a `dist/` fájljait és a helyi `/api/likes` próbaszolgáltatást szolgálja ki; könyvtárlistát nem mutat.
+
+## Tetszések és népszerűség szerinti sorrend
+
+A kártyák alsó sorában a 👍 gomb mellett az összes tetszés száma látszik. Újabb kattintás visszavonja a saját tetszést. A **Legtöbb tetszés** és **Legkevesebb tetszés** rendezés a teljes betöltött gyűjteményre vonatkozik; azonos számlálónál magyar névsor dönt. A tetszés küldése nem zárja vissza a már kibontott kártyákat 12 darabra.
+
+**Az éles tetszésszámlálóhoz Google Apps Script + Google Sheets készült.** A másolható kód és a lépésenkénti bekötés a [Google-beállítási útmutatóban](./backend/google-apps-script/README.md) található. A `setup()` külön, privát szavazattáblázatot hoz létre; a katalógus nyilvános adatlapját nem módosítja. A saját Google-fiókban közzétett webalkalmazás `/exec` végű URL-jét a `dist/config.js` `likesApiUrl` mezőjébe kell írni. A Google-telepítés és az éles kapcsolat ellenőrzése még hátravan.
+
+Üres `likesApiUrl` mellett az `npm start` a helyi `/api/likes` próbaszolgáltatást használja; ezt a felületen is jelöljük. A helyi szavazatok a Gitből kizárt `.local/likes.json` fájlba kerülnek, így külön böngészők ugyanazokat az összesített számokat látják, újraindításkor is. Ezek nem kerülnek az éles oldalra. A helyi fájlos tároló egyetlen előnézeti szerverhez készült. **Ha megadod a Google URL-jét, a helyi előnézet is az éles szavazatokat használja.**
+
+A GitHub Pages önmagában nem tudja fogadni és tárolni a szavazatokat. Bekötés nélkül az éles oldalon a szavazás és a népszerűségi rendezés nem aktív; a számlálók `–` jelet mutatnak. A katalógus ettől tovább működik. API-hibánál az utolsó igazolt szám vagy `–` látszik, az újrapróbálás elérhető. A mintaadatok előnézetében nem lehet szavazni. Az összesített számok oldalbetöltéskor, adatfrissítéskor és a saját tetszés módosításakor frissülnek; nincs folyamatos háttérlekérdezés.
+
+A böngésző az első tetszéskor hoz létre véletlenszerű azonosítót a `localStorage`-ban (`c4hu-voter-v1`); puszta megtekintéskor nem. Ezzel lehet megjegyezni, mely projektekre szavazott. Nincs bejelentkezés, név vagy e-mail-cím. A helyi tároló az azonosító SHA-256 lenyomatát menti, a Google-változat ehhez a szkriptben tárolt véletlen sót is használ. A privát szavazattáblázat csak a projektazonosítót, ezt a lenyomatot és az időpontot tárolja. Böngészőadatok törlésével vagy másik böngészővel újabb szavazat adható: ez közösségi visszajelzés, nem személyazonossággal hitelesített szavazás. A projektek táblázatbeli **Azonosító** mezőjét töltsd ki, és tartsd állandónak, mert ehhez kapcsolódnak a szavazatok.
+
+### API-szerződés az éles bekötéshez
+
+Mindkét művelet URL-kódolt űrlapként küldött `POST`, sütik és felhasználói fiók nélkül. A válasz JSON. A kliens követi a Google Content Service átirányítását, és nem küld egyedi HTTP-fejléceket. A Google webalkalmazást anonim látogatók számára is hozzáférhetően kell közzétenni; a pontos beállítások az útmutatóban szerepelnek.
+
+- Lekérés: `action=list`, `projectIds` = legfeljebb 500 egyedi projektazonosító JSON-tömbje, `voterId` = a böngésző UUID-ja vagy üres.
+- Mentés: `action=set`, `projectId`, `voterId`, `liked=true` vagy `liked=false`. A mentés idempotens: ugyanaz a kérés ismételve nem növeli újra a számlálót.
+- Siker: `{"ok":true,"projects":[{"id":"nerhotel","count":1,"liked":true}]}`. Lekéréskor minden kért projekthez kell bejegyzés, nulla szavazatnál is; mentéskor az érintett projekthez.
+- Hiba: `{"ok":false,"error":"Felhasználónak szánt hibaüzenet."}`. A kliens időtúllépése 20 másodperc.
+
+A mellékelt Apps Script szerveroldalon ellenőrzi az aktív projektazonosítókat, zárolással védi az egyidejű műveleteket, és megakadályozza az azonos böngészőazonosítóval küldött ismételt szavazatok duplázását. A látogatótól nem fogad összesített szavazatszámot. A frontendben nincs adatbázis-adminisztrátori kulcs.
 
 ## Tartalom szerkesztése
 
 - `dist/index.html`: az oldal szerkezete és állandó szövegei.
 - `dist/styles.css`: arculat, töréspontok és elrendezés.
-- `dist/config.js`: a publikált CSV címe, a beküldési e-mail-cím és a betöltési időkorlát.
+- `dist/config.js`: a publikált CSV és a szavazási API címe, a beküldési e-mail-cím és a betöltési időkorlát.
+- `dist/likes.js`: a szavazási API kliense és a népszerűségi rendezés.
+- `backend/google-apps-script/`: az éles szavazási szolgáltatás kódja és telepítési útmutatója.
 - `dist/csv.js`: CSV-feldolgozás és az adatok ellenőrzése.
 - `dist/app.js`: adatbetöltés, keresés, szűrés és interakciók.
 - `dist/downloads/civic-tech-minta.xlsx`: kitöltött mintaadatbázis és magyar útmutató.

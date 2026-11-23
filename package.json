@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node scripts/serve.mjs",
     "dev": "node scripts/serve.mjs",
-    "check": "node --check dist/app.js && node --check dist/config.js && node --check dist/csv.js && node --check scripts/serve.mjs",
+    "check": "node --check dist/app.js && node --check dist/config.js && node --check dist/csv.js && node --check dist/likes.js && node --check scripts/serve.mjs && node --check scripts/likes-store.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "engines": {

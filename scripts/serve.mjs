@@ -3,6 +3,9 @@ import { createReadStream } from 'node:fs';
 import { realpath, stat } from 'node:fs/promises';
 import { dirname, extname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createLocalLikesStore } from './likes-store.mjs';
+import { config } from '../dist/config.js';
+import { parseProjectsCsv } from '../dist/csv.js';
 
 const host = '127.0.0.1';
 const args = process.argv.slice(2);
@@ -24,6 +27,17 @@ if (!Number.isInteger(port) || port < 1 || port > 65535) {
 }
 
 const root = await realpath(resolve(dirname(fileURLToPath(import.meta.url)), '../dist'));
+let catalogIds;
+let catalogExpires = 0;
+const localLikes = createLocalLikesStore(resolve(root, '../.local/likes.json'), async () => {
+  if (!catalogIds || Date.now() > catalogExpires) {
+    const response = await fetch(config.csvUrl, { signal: AbortSignal.timeout(15000) });
+    if (!response.ok) throw new Error('A projektlista ellenőrzése most nem sikerült.');
+    catalogIds = new Set(parseProjectsCsv(await response.text()).projects.map((project) => project.id));
+    catalogExpires = Date.now() + 60000;
+  }
+  return catalogIds;
+});
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -59,6 +73,35 @@ function respond(request, response, status, message) {
 const server = createServer(async (request, response) => {
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.setHeader('Cache-Control', 'no-store');
+
+  if (request.url === '/api/likes') {
+    response.setHeader('Content-Type', 'application/json; charset=utf-8');
+    if (request.method !== 'POST') {
+      response.writeHead(405, { Allow: 'POST' });
+      response.end(JSON.stringify({ ok: false, error: 'POST kérés szükséges.' }));
+      return;
+    }
+    if (request.headers.origin && request.headers.origin !== `http://${request.headers.host}`) {
+      response.writeHead(403);
+      response.end(JSON.stringify({ ok: false, error: 'A helyi szavazás csak az előnézeti oldalról használható.' }));
+      return;
+    }
+    try {
+      const chunks = [];
+      let size = 0;
+      for await (const chunk of request) {
+        size += chunk.length;
+        if (size > 65536) throw new Error('Túl nagy kérés.');
+        chunks.push(chunk);
+      }
+      const result = await localLikes(new URLSearchParams(Buffer.concat(chunks).toString('utf8')));
+      response.end(JSON.stringify(result));
+    } catch (error) {
+      response.writeHead(400);
+      response.end(JSON.stringify({ ok: false, error: error.message }));
+    }
+    return;
+  }
 
   if (!['GET', 'HEAD'].includes(request.method)) {
     response.setHeader('Allow', 'GET, HEAD');

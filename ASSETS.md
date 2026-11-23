@@ -71,6 +71,17 @@ A képek valódi böngészős felvételek. Az Út a börtönbe analitikai sütij
 
 A képek valódi böngészős felvételek. A Közlöny Röviden oldalán csak a szükséges sütiket engedélyeztük; az ellenőrzéskor a legfrissebb látható közlönyszám 2026. szeptember 28-i volt. A dontes.app képe a nyilvános belépőoldalt mutatja, mert a kereső bejelentkezést igényel; a keresési funkciót nem teszteltük.
 
+### 2026. november 23-i képernyőképek
+
+| Helyi fájl a `dist/assets/screenshots/` alatt | Megnyitott forrás |
+| --- | --- |
+| `kozadatbazis.jpg` | https://kozadatbazis.hu/ |
+| `holavonat-is.jpg` | https://holavonat.is/ |
+
+A képek valódi böngészős felvételek. A Közadatbázis képe a főoldal bemutatkozását és keresőjét, a Hol a vonat? képe a betöltött országos járműtérképet és az EMMA/EMIG jelmagyarázatot mutatja. A vonatok helyzete és késése a felvétel pillanatát tükrözi.
+
+A Közadatbázis készítőjét, Végvári Zsófiát és kapcsolati címét a főoldal lábléce nevezi meg; nyilvános repository és szoftverlicenc nem volt igazolható. A Hol a vonat? az információs ablakából a [holavonat/holavonatis repositoryra](https://github.com/holavonat/holavonatis) hivatkozik. A [LICENSE](https://github.com/holavonat/holavonatis/blob/main/LICENSE) alapján a szoftver licence AGPL-3.0-or-later; ez nem jelenti a külső közlekedési és térképadatok újralicencelését.
+
 ## Repositoryk és licencek a mintaadatokban
 
 Ellenőrzés: 2026. október 12. A licenc a hivatkozott repositoryra vonatkozik.

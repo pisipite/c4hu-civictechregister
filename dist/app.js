@@ -5,6 +5,7 @@ import { createLikesClient, likesEndpoint, compareLikes } from './likes.js';
 (() => {
   'use strict';
   const PAGE_SIZE = 12;
+  const DEFAULT_SORT = 'date-desc';
   let visibleLimit = PAGE_SIZE;
   let projects = [];
   let searchable = new Map();
@@ -27,6 +28,7 @@ import { createLikesClient, likesEndpoint, compareLikes } from './likes.js';
   const loadMore = $('#load-more');
   const search = $('#search');
   const sort = $('#sort');
+  const openSourceFilter = $('#filter-open-source');
   const dialog = $('#project-dialog');
   const filterButtons = [...document.querySelectorAll('[data-filter]')];
   const normalize = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('hu').trim();
@@ -49,6 +51,7 @@ import { createLikesClient, likesEndpoint, compareLikes } from './likes.js';
   const external = 'target="_blank" rel="noopener noreferrer"';
   const linkAttrs = (url) => url.startsWith('mailto:') ? '' : external;
   let category = 'all';
+  let openSourceOnly = false;
 
   const mailBody = [
     'Sziasztok!', '', 'Az alábbi kezdeményezést ajánlom a civic-tech gyűjteménybe:', '',
@@ -186,7 +189,13 @@ import { createLikesClient, likesEndpoint, compareLikes } from './likes.js';
 
   function updateUrl() {
     const url = new URL(window.location.href);
-    for (const [key, value] of [['q', search.value.trim()], ['tema', category === 'all' ? '' : category], ['sorrend', sort.value === 'curated' ? '' : sort.value]]) {
+    const filters = [
+      ['q', search.value.trim()],
+      ['tema', category === 'all' ? '' : category],
+      ['nyilt-forraskod', openSourceOnly ? '1' : ''],
+      ['sorrend', sort.value === DEFAULT_SORT ? '' : sort.value],
+    ];
+    for (const [key, value] of filters) {
       if (value) url.searchParams.set(key, value); else url.searchParams.delete(key);
     }
     history.replaceState(null, '', url);
@@ -195,11 +204,15 @@ import { createLikesClient, likesEndpoint, compareLikes } from './likes.js';
   function render(syncUrl = true, append = false, resetLimit = true) {
     if (!append && resetLimit) visibleLimit = PAGE_SIZE;
     if (sort.value.startsWith('likes-') && ['disabled', 'error'].includes(likesState)) {
-      sort.value = 'curated';
+      sort.value = DEFAULT_SORT;
       updateUrl();
     }
     const words = normalize(search.value).split(/\s+/).filter(Boolean);
-    const matches = projects.filter((p) => (category === 'all' || p.categories.includes(category)) && words.every((word) => searchable.get(p.id).includes(word)));
+    const matches = projects.filter((project) =>
+      (category === 'all' || project.categories.includes(category)) &&
+      (!openSourceOnly || project.openSource === 'yes') &&
+      words.every((word) => searchable.get(project.id).includes(word))
+    );
     if (sort.value.startsWith('likes-')) {
       if (likesState === 'ready') matches.sort((a, b) => compareLikes(a, b, votes, sort.value === 'likes-asc' ? 'asc' : 'desc'));
     } else if (sort.value === 'date-asc' || sort.value === 'date-desc') {
@@ -237,8 +250,12 @@ import { createLikesClient, likesEndpoint, compareLikes } from './likes.js';
     $('#database-updated').hidden = loadState === 'loading' || loadState === 'error';
     $('#database-updated').innerHTML = `${sourceMode === 'sample' ? 'Mintaadatok ellenőrizve' : 'Legutóbbi adatellenőrzés'}: ${latestVerifiedAt ? `<time datetime="${escape(latestVerifiedAt)}">${escape(dateLabel(latestVerifiedAt))}</time>` : 'nincs megadva'}`;
     $('[data-filter="all"] span').textContent = loadState === 'loading' ? '–' : projects.length;
-    $('#results-count').textContent = loadState === 'loading' ? 'Betöltés folyamatban…' : words.length || category !== 'all' ? `${matches.length} találat · ${visible.length} megjelenítve · ${projects.length} kezdeményezésből` : `${visible.length} / ${projects.length} kezdeményezés megjelenítve`;
+    const filtered = words.length > 0 || category !== 'all' || openSourceOnly;
+    $('#results-count').textContent = loadState === 'loading' ? 'Betöltés folyamatban…' : filtered ? `${matches.length} találat · ${visible.length} megjelenítve · ${projects.length} kezdeményezésből` : `${visible.length} / ${projects.length} kezdeményezés megjelenítve`;
     search.disabled = sort.disabled = !projects.length;
+    openSourceFilter.disabled = !projects.length;
+    openSourceFilter.classList.toggle('active', openSourceOnly);
+    openSourceFilter.setAttribute('aria-pressed', String(openSourceOnly));
     filterButtons.forEach((button) => {
       button.disabled = !projects.length;
       const active = button.dataset.filter === category;
@@ -310,13 +327,23 @@ import { createLikesClient, likesEndpoint, compareLikes } from './likes.js';
 
   function readUrl() {
     const params = new URLSearchParams(window.location.search);
+    const requestedSort = params.get('sorrend');
     search.value = params.get('q') || '';
     category = filterButtons.some((b) => b.dataset.filter === params.get('tema')) ? params.get('tema') : 'all';
-    sort.value = ['az', 'za', 'date-asc', 'date-desc', 'likes-asc', 'likes-desc'].includes(params.get('sorrend')) ? params.get('sorrend') : 'curated';
+    openSourceOnly = params.get('nyilt-forraskod') === '1';
+    sort.value = [...sort.options].some((option) => option.value === requestedSort) ? requestedSort : DEFAULT_SORT;
     render(false);
   }
 
+  function resetCatalogControls() {
+    search.value = '';
+    category = 'all';
+    openSourceOnly = false;
+    sort.value = DEFAULT_SORT;
+  }
+
   filterButtons.forEach((button) => button.addEventListener('click', () => { category = button.dataset.filter; render(); }));
+  openSourceFilter.addEventListener('click', () => { openSourceOnly = !openSourceOnly; render(); });
   search.addEventListener('input', () => render());
   sort.addEventListener('change', () => render());
   loadMore.addEventListener('click', () => {
@@ -326,10 +353,10 @@ import { createLikesClient, likesEndpoint, compareLikes } from './likes.js';
     grid.children[previousCount]?.querySelector('.project-title a')?.focus({ preventScroll: true });
   });
   $('#clear-search').addEventListener('click', () => { search.value = ''; render(); search.focus(); });
-  $('#reset-filters').addEventListener('click', () => { search.value = ''; category = 'all'; sort.value = 'curated'; render(); search.focus(); });
+  $('#reset-filters').addEventListener('click', () => { resetCatalogControls(); render(); search.focus(); });
   $('#reload-data').addEventListener('click', () => loadCatalog('live'));
   $('#retry-likes').addEventListener('click', () => loadLikes());
-  $('#show-sample').addEventListener('click', () => { search.value = ''; category = 'all'; sort.value = 'curated'; updateUrl(); loadCatalog('sample'); });
+  $('#show-sample').addEventListener('click', () => { resetCatalogControls(); updateUrl(); loadCatalog('sample'); });
   window.addEventListener('popstate', readUrl);
   document.addEventListener('keydown', (event) => {
     if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !dialog.open && !event.target.closest('input, textarea, select, [contenteditable]')) {

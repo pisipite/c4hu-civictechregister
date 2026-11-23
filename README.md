@@ -126,9 +126,9 @@ A kártyák külön jelzik a nyílt, nem nyílt és ismeretlen forráskód-álla
 
 A feldolgozó kezeli az idézőjeleket, a cellán belüli vesszőket és sortöréseket, a Windows-sortörést és az UTF-8 BOM-ot. A hibás sorokat sorszámmal jelzi; a többi érvényes sor megjelenik. Hibás fejléc, hibás CSV-szerkezet vagy kizárólag hibás aktív sorok esetén hibaüzenet jelenik meg. A maximális CSV-méret 2 MB, a letöltési időkorlát alapértelmezésben 15 másodperc. Betöltési hiba esetén nincs automatikus mintaadat-helyettesítés.
 
-Az ékezetfüggetlen keresés a névben, leírásban, címkékben és készítőkben keres. A keresés, szűrő és rendezés URL-paraméterekben is megmarad, így egy szűrt nézet linkje megosztható. A `/` billentyű a keresőre ugrik, az `Esc` bezárja a részletes adatlapot.
+Az ékezetfüggetlen keresés a névben, leírásban, címkékben és készítőkben keres. A **Nyílt forráskódú** szűrő az `igen` státuszú, érvényes GitHub-hivatkozást megadó kezdeményezéseket mutatja, és a témaszűrővel vagy a kereséssel együtt is használható. A keresés, a szűrők és a rendezés az URL-ben is megmaradnak, így a nézet linkje megosztható. A `/` billentyű a keresőre ugrik, az `Esc` bezárja a részletes adatlapot.
 
-A **Sorrend** menüben az alapértelmezett válogatás és a névsor mellett az **Ellenőrizve** dátum szerint is rendezhető a lista, a legújabb vagy a legrégebbi dátummal kezdve. A dátum nélküli kezdeményezések mindkét esetben a lista végére kerülnek.
+Alapértelmezésben a legfrissebb **Ellenőrizve** dátumú kezdeményezések kerülnek előre. A **Sorrend** menüben fordított dátumsorrend, válogatás, névsor és népszerűségi rendezés is választható. A dátum nélküli kezdeményezések mindkét dátumsorrendben a lista végére kerülnek.
 
 A fejléc **Legutóbbi adatellenőrzés** dátuma az összes betöltött, aktív és érvényes kezdeményezés **Ellenőrizve** mezőjének legnagyobb értéke; a keresés, szűrés és lapozás nem módosítja. Ez a táblázatban megadott ellenőrzési dátum: a publikált Google Sheets CSV nem közli a munkafüzet utolsó szerkesztési idejét. Új ellenőrzés után az érintett sor **Ellenőrizve** mezőjét is frissítsd. Mintaelőnézetnél a felirat **Mintaadatok ellenőrizve**, dátum nélkül **nincs megadva**; betöltés közben vagy hiba esetén a dátum nem jelenik meg.
 

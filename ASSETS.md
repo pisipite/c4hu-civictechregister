@@ -82,6 +82,16 @@ A képek valódi böngészős felvételek. A Közadatbázis képe a főoldal bem
 
 A Közadatbázis készítőjét, Végvári Zsófiát és kapcsolati címét a főoldal lábléce nevezi meg; nyilvános repository és szoftverlicenc nem volt igazolható. A Hol a vonat? az információs ablakából a [holavonat/holavonatis repositoryra](https://github.com/holavonat/holavonatis) hivatkozik. A [LICENSE](https://github.com/holavonat/holavonatis/blob/main/LICENSE) alapján a szoftver licence AGPL-3.0-or-later; ez nem jelenti a külső közlekedési és térképadatok újralicencelését.
 
+### 2026. november 24-i képernyőkép
+
+| Helyi fájl a `dist/assets/screenshots/` alatt | Megnyitott forrás |
+| --- | --- |
+| `budapestfigyelo.jpg` | https://budapestfigyelo.hu/ |
+
+A kép valódi böngészős felvétel, csak a szükséges sütik engedélyezése után készült. A Budapest Figyelő főoldalát, az önkormányzat-választót és a betöltött üléslista elejét mutatja. A megjelenített ügyszámok és ülések a felvétel pillanatát tükrözik.
+
+Az oldal [kapcsolati lapja](https://budapestfigyelo.hu/kapcsolat) a Mayer Advisoryt nevezi meg szolgáltatóként, Kovács Máté Györgyöt kiadóként és felelős szerkesztőként; a kapcsolati cím hello@budapestfigyelo.hu. Nyilvános repository és szoftverlicenc nem volt igazolható. A [felhasználási feltételek](https://budapestfigyelo.hu/felhasznalasi-feltetelek) szerint a nyilvános keresés és az alapösszefoglalók díjmentesek, az új részletes elemzések kreditkerethez kötöttek, a regisztrált funkciók és további kreditek a bevezető időszakban díjmentesek.
+
 ## Repositoryk és licencek a mintaadatokban
 
 Ellenőrzés: 2026. október 12. A licenc a hivatkozott repositoryra vonatkozik.

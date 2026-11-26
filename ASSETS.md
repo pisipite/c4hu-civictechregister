@@ -92,6 +92,16 @@ A kép valódi böngészős felvétel, csak a szükséges sütik engedélyezése
 
 Az oldal [kapcsolati lapja](https://budapestfigyelo.hu/kapcsolat) a Mayer Advisoryt nevezi meg szolgáltatóként, Kovács Máté Györgyöt kiadóként és felelős szerkesztőként; a kapcsolati cím hello@budapestfigyelo.hu. Nyilvános repository és szoftverlicenc nem volt igazolható. A [felhasználási feltételek](https://budapestfigyelo.hu/felhasznalasi-feltetelek) szerint a nyilvános keresés és az alapösszefoglalók díjmentesek, az új részletes elemzések kreditkerethez kötöttek, a regisztrált funkciók és további kreditek a bevezető időszakban díjmentesek.
 
+### 2026. november 26-i képernyőkép
+
+| Helyi fájl a `dist/assets/screenshots/` alatt | Megnyitott forrás |
+| --- | --- |
+| `kegyencjarat.jpg` | https://www.kegyencjarat.hu/ |
+
+A kép valódi böngészős felvétel, az analitikai sütik elutasítása után készült. A Kegyencjárat főoldalának nyitóblokkját és összesítő számlálóit mutatja. A megjelenített hírek és számadatok a felvétel pillanatát tükrözik.
+
+Az [impresszum](https://www.kegyencjarat.hu/impresszum) Marosi Balázst nevezi meg üzemeltetőként és felelős szerkesztőként, kapcsolati címe hello@kegyencjarat.hu. A [csapatoldal](https://www.kegyencjarat.hu/csapat) a technikai megvalósítást Claude AI-asszisztenshez köti, partneri adatbázisként a K-Monitort jelöli. Nyilvános repository és szoftverlicenc nem volt igazolható. Az [adat-hozzáférési tájékoztató](https://www.kegyencjarat.hu/adatok) szerint a CSV e-mailben kérhető, a közvetlen letöltés és az API fejlesztés alatt áll; az adatok újrafelhasználását külön feltételek szabályozzák.
+
 ## Repositoryk és licencek a mintaadatokban
 
 Ellenőrzés: 2026. október 12. A licenc a hivatkozott repositoryra vonatkozik.
